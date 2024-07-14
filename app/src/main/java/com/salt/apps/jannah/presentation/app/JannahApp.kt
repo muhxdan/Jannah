@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import com.salt.apps.jannah.presentation.navhost.Destination
 import com.salt.apps.jannah.presentation.navhost.JannahNavHost
 
 
@@ -80,7 +82,10 @@ fun JannahApp(
     ) { padding ->
         JannahNavHost(
             appState = appState,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.padding(
+                top = padding.calculateTopPadding(),
+                bottom = if (destination == Destination.DETAIL_ALQURAN) 0.dp else padding.calculateBottomPadding()
+            ),
         )
     }
 }

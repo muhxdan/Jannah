@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.salt.apps.feature.alquran.navigation.AlQuranRoute
 import com.salt.apps.feature.alquran.navigation.navigateToAlQuran
+import com.salt.apps.feature.detail.navigation.DetailRoute
 import com.salt.apps.feature.home.navigation.HomeRoute
 import com.salt.apps.feature.home.navigation.navigateToHome
 import com.salt.apps.feature.prayer.navigation.PrayerRoute
@@ -48,6 +49,7 @@ class AppState(
             with(currentDestination) {
                 if (this?.hasRoute<HomeRoute>() == true) return Destination.HOME
                 if (this?.hasRoute<AlQuranRoute>() == true) return Destination.ALQURAN
+                if (this?.hasRoute<DetailRoute>() == true) return Destination.DETAIL_ALQURAN
                 if (this?.hasRoute<PrayerRoute>() == true) return Destination.PRAYER
                 if (this?.hasRoute<SettingRoute>() == true) return Destination.SETTING
             }
@@ -73,6 +75,7 @@ class AppState(
                 Destination.ALQURAN -> navController.navigateToAlQuran(navOptions = topLevelNavOptions)
                 Destination.PRAYER -> navController.navigateToPrayer(navOptions = topLevelNavOptions)
                 Destination.SETTING -> navController.navigateToSetting(navOptions = topLevelNavOptions)
+                else -> {}
             }
         }
     }
