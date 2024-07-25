@@ -21,10 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.salt.apps.jannah.presentation.navhost.Destination
 import com.salt.apps.jannah.presentation.navhost.JannahNavHost
 
-
 @Composable
 fun JannahApp(
-    appState: AppState,
+    appState: AppState
 ) {
     val currentDestination = appState.currentDestination
 
@@ -71,7 +70,9 @@ fun JannahApp(
                                 )
                             },
                             label = { Text(destination.iconTextId) },
-                            onClick = { appState.navigateToTopLevelDestination(destination) },
+                            onClick = {
+                                appState.navigateToTopLevelDestination(destination)
+                            },
                             colors = myNavigationSuiteItemColors,
                             selected = selected,
                         )

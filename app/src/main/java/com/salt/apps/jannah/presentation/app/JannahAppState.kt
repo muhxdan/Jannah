@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.salt.apps.core.viewmodel.SharedViewModel
 import com.salt.apps.feature.alquran.navigation.AlQuranRoute
 import com.salt.apps.feature.alquran.navigation.navigateToAlQuran
 import com.salt.apps.feature.detail.navigation.DetailRoute
@@ -26,20 +27,21 @@ import com.salt.apps.jannah.presentation.navhost.Destination
 @Composable
 fun rememberAppState(
     navController: NavHostController = rememberNavController(),
+    sharedViewModel: SharedViewModel,
 ): AppState {
-
-    return remember(
-        navController,
-    ) {
+    return remember(navController, sharedViewModel) {
         AppState(
             navController = navController,
+            sharedViewModel = sharedViewModel,
         )
     }
 }
 
+
 @Stable
 class AppState(
     val navController: NavHostController,
+    val sharedViewModel: SharedViewModel,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
@@ -72,7 +74,11 @@ class AppState(
 
             when (topLevelDestination) {
                 Destination.HOME -> navController.navigateToHome(navOptions = topLevelNavOptions)
-                Destination.ALQURAN -> navController.navigateToAlQuran(navOptions = topLevelNavOptions)
+                Destination.ALQURAN -> navController.navigateToAlQuran(
+                    navOptions = topLevelNavOptions,
+                    surah = ""
+                )
+
                 Destination.PRAYER -> navController.navigateToPrayer(navOptions = topLevelNavOptions)
                 Destination.SETTING -> navController.navigateToSetting(navOptions = topLevelNavOptions)
                 else -> {}
