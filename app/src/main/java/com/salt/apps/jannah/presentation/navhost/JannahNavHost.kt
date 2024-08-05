@@ -1,13 +1,12 @@
 package com.salt.apps.jannah.presentation.navhost
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.salt.apps.core.ui.viewmodel.DetailEvent
 import com.salt.apps.feature.alquran.navigation.alQuranScreen
+import com.salt.apps.feature.detail.navigation.detailScreen
+import com.salt.apps.feature.detail.navigation.navigateToDetail
 import com.salt.apps.feature.home.navigation.HomeRoute
 import com.salt.apps.feature.home.navigation.homeScreen
 import com.salt.apps.feature.prayer.navigation.prayerScreen
@@ -22,17 +21,28 @@ fun JannahNavHost(
     val navController = appState.navController
 
     NavHost(
-        navController = navController,
-        startDestination = HomeRoute,
-        enterTransition = { slideInVertically { it / 16 } + fadeIn() },
-        exitTransition = { fadeOut(tween(25)) },
-        popEnterTransition = { slideInVertically { it / 16 } + fadeIn() },
-        popExitTransition = { fadeOut(tween(25)) },
+        navController = navController, startDestination = HomeRoute,
+
         modifier = modifier
     ) {
         homeScreen()
-        alQuranScreen()
-        prayerScreen()
+        alQuranScreen(
+            onSurahClick = { id, name, audio ->
+                navController.navigateToDetail()
+                appState.detailViewModel.onDetailEvent(
+                    DetailEvent.UpdateSelectedTab(
+                        selectedTab = id - 1,
+                        currentSurahName = name,
+                        audioUrl = audio
+                    )
+                )
+            }, sharedViewModel = appState.sharedViewModel
+        )
+        prayerScreen(prayerViewModel = appState.prayerViewModel)
         settingScreen()
+        detailScreen(
+            sharedViewModel = appState.sharedViewModel,
+            detailViewModel = appState.detailViewModel,
+            onNavigationBack = { appState.navController.popBackStack() })
     }
 }
